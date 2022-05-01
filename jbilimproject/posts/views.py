@@ -1,3 +1,4 @@
+from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -22,9 +23,22 @@ class PostList(APIView):
             post = Post.objects.create(title=request.data['title'],
                                         original_url=request.data['original_url'])
 
-        print(request.data['paragraphs'])
         for p_text in request.data['paragraphs']:
-            print(p_text)
             Paragraph.objects.create(post=post, text=p_text)
 
         return Response(PostSerializer(post).data, status=HTTP_201_CREATED)
+
+
+class PostDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return Post.objects.get(pk=pk)
+        except:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        post = self.get_object(pk)
+
+        serializer = PostSerializer(post)
+
+        return Response(serializer.data)
