@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     
     # LOCAL
     'posts.apps.PostsConfig',
+    'forum.apps.ForumConfig',
 
     # Third party
     'django.contrib.sites',
