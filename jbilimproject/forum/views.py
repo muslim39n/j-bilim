@@ -54,13 +54,6 @@ class CommentPostView(APIView):
         except:
             raise Http404
 
-        '''
-        forum_page = models.ForeignKey(ForumPage, on_delete=models.CASCADE)
-        body = models.TextField()
-        user = models.ForeignKey(User, on_delete=models.CASCADE)
-        
-        created = models.DateTimeField(auto_now_add=True)
-        '''
         comment = Comment(forum_page=page,
                         body=request.data['body'],
                         user=request.user)

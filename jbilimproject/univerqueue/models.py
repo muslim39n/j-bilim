@@ -49,3 +49,10 @@ class UniverQueue(models.Model):
         self.places = n
 
         super().save(*args, **kwargs)
+
+class QueuePlace(models.Model):
+    date = models.DateField()
+    queue = models.ForeignKey(UniverQueue, on_delete=models.CASCADE)
+    fullname = models.CharField(max_length=256)
+    n = models.PositiveSmallIntegerField()
+    
