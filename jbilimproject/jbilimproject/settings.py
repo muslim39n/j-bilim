@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # LOCAL
     'posts.apps.PostsConfig',
     'forum.apps.ForumConfig',
+    'univerqueue.apps.UniverqueueConfig',
 
     # Third party
     'django.contrib.sites',
