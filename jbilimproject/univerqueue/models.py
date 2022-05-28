@@ -16,6 +16,11 @@ class University(models.Model):
 
     code = models.PositiveSmallIntegerField()
     description = models.TextField()
+    city_kz = models.CharField(max_length=256, default="Белгісіз")
+    image_url = models.CharField(max_length=512, default="none")
+
+    def __str__(self):
+        return self.name_kz
     
 
 class UniverQueue(models.Model):
@@ -55,4 +60,30 @@ class QueuePlace(models.Model):
     queue = models.ForeignKey(UniverQueue, on_delete=models.CASCADE)
     fullname = models.CharField(max_length=256)
     n = models.PositiveSmallIntegerField()
+    
+class UniverAction(models.Model):
+    univer = models.ForeignKey(University, on_delete=models.CASCADE)
+    title = models.CharField(max_length=256)
+
+    def __str__(self):
+        return  self.title + ' <> ' + str(self.univer)
+
+
+class UniverStep(models.Model):
+    univer_action = models.ForeignKey(UniverAction, on_delete=models.CASCADE)
+    title = models.CharField(max_length=256)
+    description = models.TextField()
+    method = models.CharField(max_length=12,
+                                choices=[
+                                    ('online', 'Онлайн документ тапсыру'),
+                                    ('offline', 'Университетке келу'),
+                                    ('queue', 'Кезекке тұру'),
+                                    ('none', 'Ешқандай'),
+                                ], default='none')
+    color = models.CharField(max_length=12,
+                                choices=[
+                                    ('kok', 'Көк'),
+                                    ('sary', 'Сары'),
+                                    ('jasyl', 'Жасыл'),
+                                ])
     
