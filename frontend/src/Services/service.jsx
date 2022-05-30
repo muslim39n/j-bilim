@@ -16,5 +16,13 @@ class UniversityService {
     getUniverDetail(id){
         return instance.get('univer/'+id)
     }
+
+    getQueue(id, m, dy){
+        return instance.get('univer/' + id + '/q/' + m + '/' + dy + '/');
+    }
+
+    choosePlace(id, m, dy, n, queue_id){
+        return instance.post('univer/' + id + '/q/' + m + '/' + dy + '/', {"queue_id": queue_id, "fullname": "mal", "n": n})
+    }
 }
 export default new UniversityService();

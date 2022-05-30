@@ -40,7 +40,7 @@ class UniverQueueList(APIView):
         for q in queues:
             q_places = QueuePlace.objects.filter(queue=q, date=date).order_by('n')
             q_data = UniverQueueSerializer(q).data
-            q_data['places'] = QueuePlaceSerializer(q_places, many=True).data
+            q_data['places'] = q.timeSlices(QueuePlaceSerializer(q_places, many=True).data) 
             data.append(q_data)
     
         return Response(data)

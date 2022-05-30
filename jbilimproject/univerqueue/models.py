@@ -55,6 +55,32 @@ class UniverQueue(models.Model):
 
         super().save(*args, **kwargs)
 
+    def timeSlices(self, places):
+        tm = self.startTime
+        sl = []
+        i = 1
+
+        while tm < self.endTime:
+            nextTm = add_mins_to_time(tm, self.minutes)
+            
+            if (tm < self.startBreakTime or tm >= self.endBreakTime) and (nextTm <= self.startBreakTime or nextTm >= self.endBreakTime and nextTm <= self.endTime):
+                isFree = True
+                place = None
+                for j in places:
+                    if j['n'] == i:
+                        isFree = False
+                        place = j
+                        break
+                    
+                sl.append({'start': tm, 'end': nextTm, 'isFree': isFree, 'place': place, 'i': i})
+                i += 1
+            
+            tm = nextTm
+
+        return sl
+            
+        
+
 class QueuePlace(models.Model):
     date = models.DateField()
     queue = models.ForeignKey(UniverQueue, on_delete=models.CASCADE)
