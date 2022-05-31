@@ -7,6 +7,9 @@ import Home from "./Pages/Home"
 import About from './Pages/About';
 import UniversityList from './Pages/University/UniversityList';
 import UniversityDetail from './Pages/University/UniversityDetail';
+import SignUp from './Pages/Auth/SignUp';
+import SignIn from './Pages/Auth/SignIn';
+import ForumList from './Pages/Forum/ForumList'
 
 import { Navbar, Container,Nav, NavDropdown } from 'react-bootstrap';
  
@@ -34,8 +37,11 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<UniversityList/>}/>
-        <Route path="/:id" element={<UniversityDetail/>}></Route>
+        <Route path="/:id" element={<UniversityDetail/>}/>
         <Route path="/about" element={<About/>}/>
+        <Route path="/forum" element={<ForumList/>} />
+        <Route path="/signup" element={<SignUp/>}/>
+        <Route path="/signin" element={<SignIn/>}/>
       </Routes>
     </Router>
     </div>
