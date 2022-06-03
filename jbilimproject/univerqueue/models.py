@@ -2,6 +2,7 @@ from django.db import models
 
 import datetime
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User 
 
 def add_mins_to_time(timeval, mins_to_add):
     dummy_date = datetime.date(1, 1, 1)
@@ -112,4 +113,8 @@ class UniverStep(models.Model):
                                     ('sary', 'Сары'),
                                     ('jasyl', 'Жасыл'),
                                 ])
+    
+class UniverAdmin(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    univer = models.ForeignKey(University, on_delete=models.CASCADE)
     

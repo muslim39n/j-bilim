@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {useParams} from 'react-router-dom';
 import UniversityService from "../../Services/service"
+import AuthService from "../../Services/authservice"
 
 import {Container, ListGroup,Badge, Form, Button, Row, Col, NavbarBrand,Accordion,Card, Alert} from 'react-bootstrap';
 import { getDropdownMenuPlacement } from 'react-bootstrap/esm/DropdownMenu';
@@ -80,8 +81,9 @@ function UniversityDetail(){
     
     const choosePlace = (event) => {
         event.preventDefault();
-        console.log();
-        UniversityService.choosePlace(univer.id, chosenMonth, chosenDay, event.target.btn.id, event.target.queue_id.value)
+        if(localStorage.getItem("token")){
+            UniversityService.choosePlace(univer.id, chosenMonth, chosenDay, event.target.btn.id, event.target.queue_id.value, localStorage.getItem("token"))
+        }
         
         UniversityService.getQueue(univer.id, chosenMonth, chosenDay)
         .then((res) => {

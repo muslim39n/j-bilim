@@ -2,6 +2,7 @@ import './App.css';
 import {BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useEffect, useState } from 'react';
 
 import Home from "./Pages/Home"
 import About from './Pages/About';
@@ -11,9 +12,30 @@ import SignUp from './Pages/Auth/SignUp';
 import SignIn from './Pages/Auth/SignIn';
 import ForumList from './Pages/Forum/ForumList'
 
+import AuthService from "./Services/authservice"
+
 import { Navbar, Container,Nav, NavDropdown } from 'react-bootstrap';
  
 function App() {
+  const [user, setUser] = useState(null)
+  useEffect(()=>{
+    if(localStorage.getItem('token') !== null){
+      AuthService.getUser(localStorage.getItem('token'))
+            .then((response)=>{
+                if (response.status === 200){
+                  setUser(response.data)
+                }
+            })
+      }
+  }, [])
+
+  const logout = (event) => {
+    event.preventDefault();
+    
+    localStorage.removeItem("token");
+    setUser(null)
+    }; 
+
   return (
     <div>
       <Navbar bg="light" expand="lg" className="mb-4">
@@ -28,9 +50,13 @@ function App() {
       </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end header">
-              <Nav.Link href="#home">Университеттер</Nav.Link>
-              <Nav.Link href="#link">Форум</Nav.Link>
-              <Nav.Link href="#link">Мақалалар</Nav.Link>
+              <Nav.Link href="/">Университеттер</Nav.Link>
+              <Nav.Link href="/forum">Форум</Nav.Link>
+              <Nav.Link href="/">Мақалалар</Nav.Link>
+              
+              {
+                user ? <Nav.Link href="#" onClick={logout}>Шығу</Nav.Link> : <Nav.Link href="/signin">Кіру</Nav.Link>
+              }
           </Navbar.Collapse>
         </Container>
       </Navbar>

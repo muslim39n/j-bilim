@@ -7,7 +7,7 @@ import {Container, ListGroup,Badge, Form, Button, Row, Col} from 'react-bootstra
 function UniversityItem(props){
     return <ListGroup.Item as="li" className="d-flex justify-content-between align-items-start">
             <div className="ms-2 me-auto">
-            <a href="#"><div className="fw-bold">{ props.slug }</div></a>
+            <a href={"/" + props.id}><div className="fw-bold">{ props.slug }</div></a>
             {props.name_kz}
             </div>
             <Badge bg="primary" pill>
@@ -64,7 +64,7 @@ function UniversityList(){
             {
                 univers.map((univer, index)=>{
                     return (
-                        <UniversityItem slug={univer.slug} name_kz={univer.name_kz} id={univer.code} image={univer.image_url}></UniversityItem>
+                        <UniversityItem slug={univer.slug} name_kz={univer.name_kz} id={univer.id} image={univer.image_url}></UniversityItem>
                     )
                 })
             }

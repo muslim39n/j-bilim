@@ -11,7 +11,8 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.status import HTTP_201_CREATED, HTTP_409_CONFLICT
 
 from .models import University, UniverQueue, QueuePlace
-from .serializers import UniversitySerializer, UniverQueueSerializer, QueuePlaceSerializer
+from .serializers import UniversitySerializer, UniverQueueSerializer, QueuePlaceSerializer, UserSerializer
+from rest_framework.authtoken.models import Token
 
 class UniversityList(ListAPIView):
     queryset = University.objects.all()
@@ -58,7 +59,8 @@ class UniverQueueList(APIView):
             status=HTTP_409_CONFLICT
 
         else:
-            QueuePlace.objects.create(date=date, queue=queue, fullname=request.data['fullname'], n=request.data['n'])
+            user = Token.objects.get(key=request.data['key']).user
+            QueuePlace.objects.create(date=date, queue=queue, fullname=f'{user.first_name} {user.last_name}', n=request.data['n'])
             status = HTTP_201_CREATED
 
         queues = UniverQueue.objects.filter(univer=univer)
@@ -75,6 +77,27 @@ class UniverQueueList(APIView):
 class CityList(APIView):
     def get(self, request):
         cities = University.objects.values('city_kz').distinct()
-        data = [i['city_kz'] for i in cities]
+        data = [i['city_kz'] for i in cities] 
         return Response(data)
         
+
+class SignUp(APIView):
+    def post(self, request):
+        try:
+            print(request.data)
+            user = Token.objects.get(key=request.data['key']).user
+            user.first_name = request.data['firstname']
+            user.last_name = request.data['lastname']
+            user.save()
+            return Response(status=HTTP_201_CREATED)
+        except:
+            return Response(status=HTTP_409_CONFLICT)
+
+class UserModelView(APIView):
+    def post(self, request):
+        try:
+            print(request.data)
+            user = Token.objects.get(key=request.data['key']).user
+            return Response(UserSerializer(user).data)
+        except:
+            return Response(status=HTTP_409_CONFLICT)

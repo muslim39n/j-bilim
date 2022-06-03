@@ -1,35 +1,51 @@
 import React, { Component } from 'react'
 import {Container, ListGroup,Card, Form, Button, Row, Col} from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import AuthService from "../../Services/authservice"
 
 function SignIn(props){
-  return<Container>
+    const navigate = useNavigate();
+
+    const signin = (event) => {
+        event.preventDefault();
+        AuthService.login(event.target.username.value, event.target.password.value)
+            .then((res) => {
+                console.log(res.status)
+                console.log(res.data)
+                if(res.status === 200){
+                    localStorage.setItem('token', res.data.key)
+                }
+            })
+    };
+
+    return<Container>
       <Row>
           <Col className="col-md-4" style={{marginLeft: "auto", marginRight: "auto"}}>
-            <form>
-                <h3>Sign Up</h3>
+            <form onSubmit={signin}>
+                <h3>Кіру</h3>
                 <div className="mb-3">
-                <label>Email address</label>
+                <label>Юзернейм</label>
                 <input
-                    type="email"
+                    type="text"
                     className="form-control"
-                    placeholder="Enter email"
+                    name="username"
                 />
                 </div>
                 <div className="mb-3">
-                <label>Password</label>
+                <label>Кілтсөз</label>
                 <input
                     type="password"
                     className="form-control"
-                    placeholder="Enter password"
+                    name="password"
                 />
                 </div>
                 <div className="d-grid">
                 <button type="submit" className="btn btn-primary">
-                    Sign Up
+                    Кіру
                 </button>
                 </div>
                 <p className="forgot-password text-right">
-                Already registered <a href="/sign-in">sign in?</a>
+                Егер аккаунт болмаса, <a href="/signup">тіркей аласыз</a>
                 </p>
             </form>
             </Col>

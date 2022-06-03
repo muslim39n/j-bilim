@@ -21,8 +21,9 @@ class UniversityService {
         return instance.get('univer/' + id + '/q/' + m + '/' + dy + '/');
     }
 
-    choosePlace(id, m, dy, n, queue_id){
-        return instance.post('univer/' + id + '/q/' + m + '/' + dy + '/', {"queue_id": queue_id, "fullname": "mal", "n": n})
+    choosePlace(id, m, dy, n, queue_id, key){
+        console.log(key)
+        return instance.post('univer/' + id + '/q/' + m + '/' + dy + '/', {"queue_id": queue_id, "fullname": "mal", "n": n, "key":key})
     }
 }
 export default new UniversityService();

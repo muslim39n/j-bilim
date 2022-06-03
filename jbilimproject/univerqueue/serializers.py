@@ -1,7 +1,6 @@
 from rest_framework import serializers
-
-
-from .models import University, UniverQueue, QueuePlace, UniverAction, UniverStep
+from .models import University, UniverQueue, QueuePlace, UniverAction, UniverStep, UniverAdmin
+from django.contrib.auth.models import User 
 
 class UniverStepSerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,3 +31,16 @@ class UniverQueueSerializer(serializers.ModelSerializer):
         fields = ['id', 'queue_type', 'minutes', 
                     'startTime', 'endTime', 
                     'startBreakTime', 'endBreakTime', 'places']
+
+
+class UniverAdminSerializer(serializers.ModelSerializer):
+    univer = UniversitySerializer(read_only=True)
+    class Meta:
+        model = UniverAdmin
+        fields = ['id', 'univer']
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+
